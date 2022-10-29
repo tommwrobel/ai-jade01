@@ -6,8 +6,6 @@ import jade.lang.acl.*;
 import jade.domain.*;
 import jade.domain.FIPAAgentManagement.*;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
 public class MyAgent extends Agent {
 	protected void setup () {
@@ -54,7 +52,7 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 				//I cannot answer but I will search for someone who can
 				DFAgentDescription dfad = new DFAgentDescription();
 				ServiceDescription sd = new ServiceDescription();
-				sd.setName(ontology);
+				sd.setName("dictionary");
 				dfad.addServices(sd);
 				try
 				{
@@ -74,7 +72,7 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 				catch (FIPAException ex)
 				{
 					ex.printStackTrace();
-					myAgent.displayResponse("Problem occured while searching for a service ...");
+					myAgent.displayResponse("Problem occurred while searching for a service ...");
 				}
 			}
 			else
