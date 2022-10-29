@@ -1,6 +1,7 @@
 <project name="JadeLab1" default="run" basedir=".">
   <property name="src" location="src"/>
   <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
 
   <target name="init">
     <mkdir dir="${build}"/>
@@ -20,7 +21,7 @@
   <target name="run" description="create agents" >
     <java fork="true" classpath="jade/lib/jade.jar;build" classname="jade.Boot">
       <arg value="-gui" />
-      <arg value="UserAgent:jadelab1.MyAgent;ServiceAgent:jadelab1.ServiceAgent" />
+      <arg value="UserAgent:jadelab1.MyAgent;ServiceAgent:jadelab1.ServiceAgent;NewServiceAgent:jadelab1.NewServiceAgent" />
     </java>
   </target>
 </project>
