@@ -84,8 +84,7 @@ public class ServiceAgent extends Agent {
 class WordnetCyclicBehaviour extends CyclicBehaviour
 {
 	ServiceAgent agent;
-	public WordnetCyclicBehaviour(ServiceAgent agent)
-	{
+	public WordnetCyclicBehaviour(ServiceAgent agent) {
 		this.agent = agent;
 	}
 	public void action()
