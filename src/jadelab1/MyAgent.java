@@ -6,6 +6,9 @@ import jade.lang.acl.*;
 import jade.domain.*;
 import jade.domain.FIPAAgentManagement.*;
 import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MyAgent extends Agent {
 	protected void setup () {
@@ -36,6 +39,7 @@ public class MyAgent extends Agent {
 
 class MyCyclicBehaviour extends CyclicBehaviour {
 	MyAgent myAgent;
+	Map<String, String> messages = new HashMap<>();
 	public MyCyclicBehaviour(MyAgent myAgent) {
 		this.myAgent = myAgent;
 	}
@@ -60,12 +64,22 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 					if (result.length == 0) myAgent.displayResponse("No service has been found ...");
 					else
 					{
+						// if agent exists, create uuid for message and send message to agent
+						String messageId = UUID.randomUUID().toString();
+						messages.put(messageId, message.getContent());
+
+						//delete this:
+						JOptionPane.showMessageDialog(null, messages.toString(),"Messages already send",JOptionPane.PLAIN_MESSAGE);
+
 						String foundAgent = result[0].getName().getLocalName();
 						myAgent.displayResponse("Agent " + foundAgent + " is a service provider. Sending message to " + foundAgent);
+
 						ACLMessage forward = new ACLMessage(ACLMessage.REQUEST);
 						forward.addReceiver(new AID(foundAgent, AID.ISLOCALNAME));
 						forward.setContent(content);
 						forward.setOntology(ontology);
+						forward.setConversationId(messageId);
+						forward.setReplyWith(messageId);
 						myAgent.send(forward);
 					}
 				}
