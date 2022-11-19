@@ -99,7 +99,6 @@ class DictionaryCyclicBehaviour extends CyclicBehaviour
 			String serviceName = message.getOntology();
 
 			ACLMessage reply = message.createReply();
-			reply.setInReplyTo(message.getConversationId());
 			reply.setPerformative(ACLMessage.INFORM);
 			String response = "";
 			try
