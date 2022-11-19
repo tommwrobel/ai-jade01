@@ -22,7 +22,7 @@ public class MyAgent extends Agent {
 	public void displayResponse(String message) {
 		JOptionPane.showMessageDialog(null,message,"Message",JOptionPane.PLAIN_MESSAGE);
 	}
-	public void displayHtmlResponse(String html) {
+	public void displayHtmlResponse(String html, String word) {
 		JTextPane tp = new JTextPane();
 		JScrollPane js = new JScrollPane();
 		js.getViewport().add(tp);
@@ -33,6 +33,7 @@ public class MyAgent extends Agent {
 		jf.setVisible(true);
 		tp.setContentType("text/html");
 		tp.setEditable(false);
+		jf.setTitle("In response to: " + word);
 		tp.setText(html);
 	}
 }
@@ -50,6 +51,7 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 		} else {
 			String ontology = message.getOntology();
 			String content = message.getContent();
+			String id = message.getInReplyTo();
 			int performative = message.getPerformative();
 			if (performative == ACLMessage.REQUEST)
 			{
@@ -68,9 +70,6 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 						String messageId = UUID.randomUUID().toString();
 						messages.put(messageId, message.getContent());
 
-						//delete this:
-						JOptionPane.showMessageDialog(null, messages.toString(),"Messages already send",JOptionPane.PLAIN_MESSAGE);
-
 						String foundAgent = result[0].getName().getLocalName();
 						myAgent.displayResponse("Agent " + foundAgent + " is a service provider. Sending message to " + foundAgent);
 
@@ -78,7 +77,6 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 						forward.addReceiver(new AID(foundAgent, AID.ISLOCALNAME));
 						forward.setContent(content);
 						forward.setOntology(ontology);
-						forward.setConversationId(messageId);
 						forward.setReplyWith(messageId);
 						myAgent.send(forward);
 					}
@@ -91,7 +89,8 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 			}
 			else
 			{	//when it is an answer
-				myAgent.displayHtmlResponse(content);
+				String word = messages.get(id);
+				myAgent.displayHtmlResponse(content, word);
 			}
 		}
 	}
